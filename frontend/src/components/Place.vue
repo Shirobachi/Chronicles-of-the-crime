@@ -1,5 +1,8 @@
 <script setup>
 	import Person from "../components/Person.vue";
+  import { useToast } from "vue-toastification";
+
+	const Toast = useToast();
 
 	const props = defineProps({
 		id: String,
@@ -26,7 +29,15 @@
 		emit("delThisPerson", e);
 	}
 
-	const isPersonValid = (id) => id >= 1 && id <= 55;
+	const isPersonValid = (id) => {
+		if (id > 0 && id < 100)
+			return true;
+		else{
+			Toast.info("Person id is not valid!");
+			return false;
+		}
+
+	}
 
 	const addPerson = () => {
 		var id = prompt("Enter person id");
@@ -52,7 +63,7 @@
 			</div>
 
 			<div class="flex space-x-5">
-				<svg @click="delThisPlace" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400 hover:text-red-800 hover:cursor-pointer absolute top-2 right-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+				<svg v-if="props.id != 'HOME'" @click="delThisPlace" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400 hover:text-red-800 hover:cursor-pointer absolute top-2 right-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
 				</svg>
 				<svg @click="addPerson" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-400 hover:text-red-800 hover:cursor-pointer absolute top-2 right-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

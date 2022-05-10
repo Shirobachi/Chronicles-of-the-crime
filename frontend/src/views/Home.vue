@@ -1,6 +1,9 @@
 <script setup>
 	import { computed, ref } from "vue";	
 	import Place from "../components/Place.vue";
+  import { useToast } from "vue-toastification";
+
+	const Toast = useToast();
 
 	const data = ref(
 		{
@@ -25,7 +28,8 @@
 
 	const delPlace = (id) => {
 		console.log("delete place: ", id);
-		data.value.places = data.value.places.filter(place => place.id !== id);
+		if (isPlaceValid(id))
+			data.value.places = data.value.places.filter(place => place.id !== id);
 	}
 
 	const delPerson = (id) => {
@@ -40,15 +44,14 @@
 		
 		var correct = "ABCDEFGHIJKLMNOP";
 		id = id.toUpperCase();
-		var isValid = true;
+		
 		for (var i = 0; i < id.length; i++) {
 			if (correct.indexOf(id[i]) === -1) {
-				isValid = false;
-				break;
+				Toast.info("Place id is not valid!");
+				return false;
 			}
 		}
-
-		return isValid;
+		return true;
 	}
 
 	const addPlace = () => {
