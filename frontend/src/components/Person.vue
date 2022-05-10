@@ -4,7 +4,6 @@
 	});
 
 	const person = new URL("../img/people/" + props.id + ".png", import.meta.url).href;
-	const qr = new URL("https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=Ind1_c" + props.id + ".jpg", import.meta.url).href;
 	const w = 250;
 
 	const del = (id) => {
