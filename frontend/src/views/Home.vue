@@ -1,6 +1,7 @@
 <script setup>
 	import { computed, ref } from "vue";	
 	import Place from "../components/Place.vue";
+	import SpecialItem from "../components/SpecialItem.vue";
 	import Item from "../components/Item.vue";
   import { useToast } from "vue-toastification";
 
@@ -25,30 +26,30 @@
 				},
 			],
 			cards: {
-				normal: [
+				normal: [],
+				special: [
 					{
-						id: 29
+						id: 7
 					},
 					{
-						id: 29
+						id: 7
 					},
 					{
-						id: 29
+						id: 7
 					},
 					{
-						id: 29
+						id: 7
 					},
 					{
-						id: 29
+						id: 7
 					},
 					{
-						id: 29
+						id: 7
 					},
 					{
-						id: 29
+						id: 7
 					},
 				],
-				special: [],
 			}
 		},
 	);
@@ -69,6 +70,12 @@
 	const delItem = (id) => {
 		console.log("delete item: ", id);
 		data.value.cards.normal = data.value.cards.normal.filter(item => item.id !== id);
+	}
+
+	const delSpecialItem = (id) => {
+		console.log("delete special item: ", id);
+
+		data.value.cards.special = data.value.cards.special.filter(item => item.id !== id);
 	}
 
 	const isPlaceValid = (id) => {
@@ -105,11 +112,29 @@
 		return false;
 	}
 
+	const isValidSpecialCard = (id) => {
+		if (id >= 0 && id <= 74) {
+			return true;
+		}
+		Toast.info("Card id is not valid!");
+		return false;
+	}
+
 	const addNewCard = () => {
 		var id = prompt("Enter card id");
 
 		if (isValidCard(id)) {
 			data.value.cards.normal.push({
+				id: id,
+			});
+		}
+	}
+
+	const addNewSpecialCard = () => {
+		var id = prompt("Enter card id");
+
+		if (isValidSpecialCard(id)) {
+			data.value.cards.special.push({
 				id: id,
 			});
 		}
@@ -170,7 +195,18 @@
 				</div>
 
 				<!-- SPECIAL CARDS -->
-				<div v-if="modalOption == 0">
+				<div v-if="modalOption == 1">
+					<div class="grid grid-cols-5 space-x-3 space-y-3">
+						<div v-for = "item in data.cards.special" :key="item.id">
+							<SpecialItem @delSpecialItem="delSpecialItem" :item="item"/>
+						</div>
+					</div>
+						
+					<!-- ADD NEW BUTTON -->
+					<div class="flex justify-center mt-2">
+						<button @click="addNewSpecialCard()" type="button" class="text-green-400 hover:text-white border border-green-400 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-green-300 dark:text-green-300 dark:hover:text-white dark:hover:bg-green-400 dark:focus:ring-green-900">Add new card</button>
+					</div>
+
 				</div>
 
       </div>
